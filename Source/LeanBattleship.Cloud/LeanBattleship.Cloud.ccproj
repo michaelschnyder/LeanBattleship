@@ -36,6 +36,24 @@
     <ServiceConfiguration Include="ServiceConfiguration.Local.cscfg" />
     <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LeanBattleship.Web\LeanBattleship.Web.csproj">
+      <Name>LeanBattleship.Web</Name>
+      <Project>{eccca977-0890-456d-b91e-b37308ad1e22}</Project>
+      <Private>True</Private>
+      <RoleType>Web</RoleType>
+      <RoleName>LeanBattleship.Web</RoleName>
+      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="LeanBattleship.WebContent\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="LeanBattleship.WebContent\diagnostics.wadcfg">
+      <SubType>Content</SubType>
+    </Content>
+  </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>
     <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>

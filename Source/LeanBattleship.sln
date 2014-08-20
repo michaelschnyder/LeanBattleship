@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeanBattleship.Web", "LeanBattleship.Web\LeanBattleship.Web.csproj", "{ECCCA977-0890-456D-B91E-B37308AD1E22}"
+EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "LeanBattleship.Cloud", "LeanBattleship.Cloud\LeanBattleship.Cloud.ccproj", "{5D19E173-0CD2-4F2C-9E18-4213B5D6225D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{ECCCA977-0890-456D-B91E-B37308AD1E22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECCCA977-0890-456D-B91E-B37308AD1E22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECCCA977-0890-456D-B91E-B37308AD1E22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D19E173-0CD2-4F2C-9E18-4213B5D6225D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D19E173-0CD2-4F2C-9E18-4213B5D6225D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D19E173-0CD2-4F2C-9E18-4213B5D6225D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D19E173-0CD2-4F2C-9E18-4213B5D6225D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
