@@ -27,7 +27,7 @@ namespace LeanBattleship.Web.Controllers
 
         [HttpPut]
         [Route("api/game/{gameId}/ships")]
-        public IHttpActionResult SetupShipsForGame(string gameId, List<ShipPlacement> )
+        public IHttpActionResult SetupShipsForGame(string gameId, List<ShipPlacement> shipPlacements)
         {
             var tournament = ServiceLocator.Current.GetInstance<ITournamentService>();
 
