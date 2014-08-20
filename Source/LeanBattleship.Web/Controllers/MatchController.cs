@@ -1,21 +1,18 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using Microsoft.Practices.ServiceLocation;
 
 namespace LeanBattleship.Web.Controllers
 {
-    public class PlayController : ApiController
+    public class MatchController : ApiController
     {
         [HttpGet]
-        [Route("api/game/{gameId}/state")]
-        public IHttpActionResult GetStateForGame(string gameId)
+        [Route("api/match/{matchId}/state")]
+        public IHttpActionResult GetStateForGame(string matchId)
         {
             var tournament = ServiceLocator.Current.GetInstance<ITournamentService>();
 
-            var game = tournament.GetGame(gameId);
+            var game = tournament.GetGame(matchId);
 
             if (game == null)
             {
@@ -26,7 +23,7 @@ namespace LeanBattleship.Web.Controllers
         }
 
         [HttpPut]
-        [Route("api/game/{gameId}/ships")]
+        [Route("api/match/{matchId}/setup")]
         public IHttpActionResult SetupShipsForGame(string gameId, List<ShipPlacement> shipPlacements)
         {
             var tournament = ServiceLocator.Current.GetInstance<ITournamentService>();
@@ -42,7 +39,7 @@ namespace LeanBattleship.Web.Controllers
         }
 
         [HttpPost]
-        [Route("api/game/{gameId}/fire/{position}")]
+        [Route("api/match/{matchId}/fire/{position}")]
         public IHttpActionResult FireInGame(string gameId, string position)
         {
             var tournament = ServiceLocator.Current.GetInstance<ITournamentService>();
