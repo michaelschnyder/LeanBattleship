@@ -24,7 +24,7 @@ namespace LeanBattleship.Web.Controllers
             return Json(new VersionDto
             {
                 Version = webAssembly.GetName().Version.ToString(), 
-                Build = webAssembly.GetName().Version.Build.ToString(CultureInfo.CurrentCulture),
+                Build = webAssembly.GetName().Version.Revision.ToString(CultureInfo.CurrentCulture),
                 Configuration = configuration
             });
         }
