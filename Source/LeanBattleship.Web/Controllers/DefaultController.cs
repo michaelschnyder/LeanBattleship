@@ -20,7 +20,6 @@ namespace LeanBattleship.Web.Controllers
                 configuration = configurationAttribute.First().Configuration;
             }
 
-
             return Json(new VersionDto
             {
                 Version = webAssembly.GetName().Version.ToString(), 

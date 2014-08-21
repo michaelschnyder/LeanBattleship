@@ -4,7 +4,7 @@
     <Instances count="1" />
     <ConfigurationSettings>
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
-      <Setting name="DatabaseConnection" value="" />
+      <Setting name="DatabaseConnection" value="Server=tcp:cmn66qm6xb.database.windows.net,1433;Database=LeanBattleship;User ID=emtwosql@cmn66qm6xb;Password=abc.123$;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" />
     </ConfigurationSettings>
   </Role>
 </ServiceConfiguration>

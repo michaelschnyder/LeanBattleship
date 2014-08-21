@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
 using LeanBattleship.Common;
 using LeanBattleship.Core.Services;
 using LeanBattleship.Data;
+// using LeanBattleship.Data.Migrations;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.WindowsAzure;
@@ -16,6 +18,8 @@ namespace LeanBattleship.Web
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
+
+            // Database.SetInitializer(new MigrateDatabaseToLatestVersion<DataContext, Configuration>()); 
 
             var locator = new UnityServiceLocator(ConfigureUnityContainer());
             ServiceLocator.SetLocatorProvider(() => locator);

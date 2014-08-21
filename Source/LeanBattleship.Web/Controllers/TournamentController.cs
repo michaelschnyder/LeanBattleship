@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using LeanBattleship.Common;
-using LeanBattleship.Core;
 using LeanBattleship.Web.Dto;
 using Microsoft.Practices.ServiceLocation;
 
@@ -20,7 +20,7 @@ namespace LeanBattleship.Web.Controllers
         }
 
         [HttpGet]
-        [Route("api/tournaments")]
+        [Route("api/tournament")]
         public IHttpActionResult GetAllTournaments()
         {
             var allTournaments = this.tournamentService.GetAll();
@@ -30,7 +30,7 @@ namespace LeanBattleship.Web.Controllers
         }
 
         [HttpPost]
-        [Route("api/tournaments")]
+        [Route("api/tournament")]
         public IHttpActionResult AddTournament([FromBody]TournametDto tournamentDto)
         {
             var created = this.tournamentService.Create(tournamentDto.Name);
@@ -44,7 +44,7 @@ namespace LeanBattleship.Web.Controllers
         }
 
         [HttpGet]
-        [Route("api/tournaments/{tournamentId}/join")]
+        [Route("api/tournament/{tournamentId}/join")]
         public IHttpActionResult JoinTournament(int tournamentId, string playerName)
         {
             if (!this.tournamentService.Exists(tournamentId))
@@ -67,7 +67,49 @@ namespace LeanBattleship.Web.Controllers
         }
 
         [HttpGet]
-        [Route("api/tournaments/{tournamentId}/leave")]
+        [Route("api/tournament/{tournamentId}/mymatches")]
+        public IHttpActionResult MyMatchesInTournament(int tournamentId)
+        {
+            var myMatches = new List<MyMatchesDto>();
+
+            var playerName = PlayerIdentifier.GetPlayerName(this.Request);
+            var player = this.playerService.FindPlayer(playerName);
+
+            if (playerName == null)
+            {
+                return this.BadRequest("Player not found");
+            }
+
+            var matchesFromDb = this.playerService.GetActiveMatches(player);
+
+            foreach (var match in matchesFromDb)
+            {
+                var myMatch = new MyMatchesDto
+                {
+                    MatchId = match.Id,
+                    TournamentId = tournamentId,
+                    MatchState = match.State.ToString()
+                };
+
+                if (match.CurrentPlayer == player)
+                {
+                    myMatch.WaitingFor = "You";
+                }
+                else if (match.CurrentPlayer != null)
+                {
+                    myMatch.WaitingFor = "Other";
+                }
+                else
+                {
+                    myMatch.WaitingFor = "Server";
+                }
+            }
+
+            return Json(myMatches);
+        }
+
+        [HttpGet]
+        [Route("api/tournament/{tournamentId}/leave")]
         public IHttpActionResult LeaveTournament(int tournamentId)
         {
             if (!this.tournamentService.Exists(tournamentId))

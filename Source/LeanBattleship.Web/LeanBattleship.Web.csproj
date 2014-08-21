@@ -123,8 +123,9 @@
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\GameEventController.cs" />
     <Compile Include="Controllers\MatchController.cs" />
+    <Compile Include="Dto\MyMatchesDto.cs" />
     <Compile Include="Controllers\TournamentController.cs" />
-    <Compile Include="Controllers\VersionDto.cs" />
+    <Compile Include="Dto\VersionDto.cs" />
     <Compile Include="Dto\TournametDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

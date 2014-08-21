@@ -9,6 +9,11 @@ namespace LeanBattleship.Data
 
         public DbSet<Match> Matches { get; set; }
 
+        public DataContext()
+        {
+            
+        }
+
         public DataContext(string connectionString)
             : base(connectionString)
         {

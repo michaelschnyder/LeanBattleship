@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using LeanBattleship.Model;
 
 namespace LeanBattleship.Common
@@ -6,5 +7,6 @@ namespace LeanBattleship.Common
     {
         Player FindPlayer(string playerName);
         Player CreatePlayer(string playerName);
+        List<Match> GetActiveMatches(Player player);
     }
 }

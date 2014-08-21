@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace LeanBattleship.Model
 {
@@ -21,6 +22,8 @@ namespace LeanBattleship.Model
         public Fleet FirstPlayerFleet { get; set; }
 
         public Fleet SecondPlayerFleet { get; set; }
+
+        public DateTime StartTimeUtc { get; set; }
     }
 
     public enum MatchState
