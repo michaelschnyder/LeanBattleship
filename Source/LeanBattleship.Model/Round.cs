@@ -2,11 +2,11 @@
 {
     public class Round
     {
-        private readonly Game game;
+        private readonly Match match;
 
-        public Round(Game game)
+        public Round(Match match)
         {
-            this.game = game;
+            this.match = match;
         }
     }
 }

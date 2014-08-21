@@ -1,18 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
+using LeanBattleship.Core;
 using Microsoft.Practices.ServiceLocation;
 
 namespace LeanBattleship.Web.Controllers
 {
     public class MatchController : ApiController
     {
+        private readonly ITournamentService tournamentService;
+
+        public MatchController()
+        {
+            this.tournamentService = ServiceLocator.Current.GetInstance<ITournamentService>();
+        }
+
         [HttpGet]
         [Route("api/match/{matchId}/state")]
         public IHttpActionResult GetStateForGame(string matchId)
         {
-            var tournament = ServiceLocator.Current.GetInstance<ITournamentService>();
-
-            var game = tournament.GetGame(matchId);
+            var game = this.tournamentService.GetMatchController(matchId);
 
             if (game == null)
             {
@@ -24,17 +30,18 @@ namespace LeanBattleship.Web.Controllers
 
         [HttpPut]
         [Route("api/match/{matchId}/setup")]
-        public IHttpActionResult SetupShipsForGame(string gameId, List<ShipPlacement> shipPlacements)
+        public IHttpActionResult SetupShipsForGame(string gameId, List<ShipPlacementDto> shipPlacements)
         {
             var tournament = ServiceLocator.Current.GetInstance<ITournamentService>();
 
+            /*
             var game = tournament.GetGame(gameId);
 
             if (game == null)
             {
                 return this.NotFound();
             }
-
+            */
             return this.Ok();
         }
 
@@ -43,7 +50,7 @@ namespace LeanBattleship.Web.Controllers
         public IHttpActionResult FireInGame(string gameId, string position)
         {
             var tournament = ServiceLocator.Current.GetInstance<ITournamentService>();
-
+            /*
             var game = tournament.GetGame(gameId);
 
             if (game == null)
@@ -55,21 +62,18 @@ namespace LeanBattleship.Web.Controllers
             {
                 return this.Ok();
             }
-
+            */
             return this.Ok();
         }
     }
 
-    public class ShipPlacement
+    
+    public class ShipPlacementDto
     {
-        private List<KeyValuePair<string, string>> positionsList = new List<KeyValuePair<string, string>>();
+        public string[] Cells { get; set; }
     }
 
-    public interface ITournamentService
-    {
-        BattleShipGame GetGame(string gameId);
-    }
-
+    /*
     public class BattleShipGame
     {
         public bool Fire()
@@ -77,4 +81,5 @@ namespace LeanBattleship.Web.Controllers
             return true;
         }
     }
+    */
 }

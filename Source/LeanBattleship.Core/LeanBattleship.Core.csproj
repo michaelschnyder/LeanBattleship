@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{794C6586-CD47-490B-BD8F-AD7DC343CC55}</ProjectGuid>
+    <ProjectGuid>{B3C7951A-A27C-4ECB-9C5A-D72CDBBD7BA7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LeanBattleship.Game</RootNamespace>
-    <AssemblyName>LeanBattleship.Game</AssemblyName>
+    <RootNamespace>LeanBattleship.Core</RootNamespace>
+    <AssemblyName>LeanBattleship.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,7 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPlayerService.cs" />
+    <Compile Include="ITournamentService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LeanBattleship.Model\LeanBattleship.Model.csproj">
+      <Project>{683623B7-82A3-431F-8F22-04AD77500A34}</Project>
+      <Name>LeanBattleship.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

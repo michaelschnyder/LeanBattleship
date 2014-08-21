@@ -91,16 +91,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\GameEventController.cs" />
     <Compile Include="Controllers\MatchController.cs" />
     <Compile Include="Controllers\TournamentController.cs" />
+    <Compile Include="Dto\TournametDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="PlayerIdentifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LeanBattleship.Core\LeanBattleship.Core.csproj">
+      <Project>{B3C7951A-A27C-4ECB-9C5A-D72CDBBD7BA7}</Project>
+      <Name>LeanBattleship.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LeanBattleship.Model\LeanBattleship.Model.csproj">
+      <Project>{683623B7-82A3-431F-8F22-04AD77500A34}</Project>
+      <Name>LeanBattleship.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

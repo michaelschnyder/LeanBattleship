@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("LeanBattleship.Game")]
+[assembly: AssemblyTitle("LeanBattleship.Core")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Zuehlke Technology Group")]
-[assembly: AssemblyProduct("LeanBattleship.Game")]
+[assembly: AssemblyProduct("LeanBattleship.Core")]
 [assembly: AssemblyCopyright("Copyright © Zuehlke Technology Group 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("09257c5b-38f9-4dd7-b437-925ffb9633be")]
+[assembly: Guid("8582a558-10d6-46ff-8848-ce0709c87221")]
 
 // Version information for an assembly consists of the following four values:
 //

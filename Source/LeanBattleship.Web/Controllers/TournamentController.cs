@@ -1,27 +1,76 @@
-﻿using System.Web.Http;
+﻿using System.Linq;
+using System.Web.Http;
+using LeanBattleship.Core;
+using LeanBattleship.Web.Dto;
+using Microsoft.Practices.ServiceLocation;
 
 namespace LeanBattleship.Web.Controllers
 {
     public class TournamentController : ApiController
     {
+        private readonly ITournamentService tournamentService;
+        private readonly IPlayerService playerService;
+
+        public TournamentController()
+        {
+            this.tournamentService = ServiceLocator.Current.GetInstance<ITournamentService>();
+            this.playerService = ServiceLocator.Current.GetInstance<IPlayerService>();
+        }
+
         [HttpGet]
         [Route("api/tournaments")]
         public IHttpActionResult GetAllTournaments()
         {
-            return Json(new object[] { });
+            var allTournaments = this.tournamentService.GetAll();
+
+            var dtos = allTournaments.Select(t => new TournametDto {Id = t.Id, Name = t.Name});
+            return Json(dtos);
         }
 
         [HttpGet]
-        //[Route("api/tournaments/{tournamentId}/join?name={playerName}&callbackurl={callbackurl}")]
-        public IHttpActionResult JoinTournament(string tournamentId, string playerName, string callbacklUrl)
+        [Route("api/tournaments/{tournamentId}/join")]
+        public IHttpActionResult JoinTournament(int tournamentId, string playerName)
         {
+            if (!this.tournamentService.Exists(tournamentId))
+            {
+                return this.NotFound();
+            }
+
+            var player = this.playerService.FindPlayer(playerName);
+
+            if (player == null)
+            {
+                player = this.playerService.CreatePlayer(playerName);
+            }
+
+            // Do it really
+            var tournament = this.tournamentService.FindById(tournamentId);
+            this.tournamentService.AddPlayer(tournament, player);
+
             return this.Ok();
         }
 
         [HttpGet]
         [Route("api/tournaments/{tournamentId}/leave")]
-        public IHttpActionResult LeaveTournament(string tournamentId)
+        public IHttpActionResult LeaveTournament(int tournamentId)
         {
+            if (!this.tournamentService.Exists(tournamentId))
+            {
+                return this.NotFound();
+            }
+
+            var playerName = PlayerIdentifier.GetPlayerName(this.Request);
+            var player = this.playerService.FindPlayer(playerName);
+
+            if (player == null)
+            {
+                return this.BadRequest("Player not found");
+            }
+
+            // Do it really.
+            var tournament = this.tournamentService.FindById(tournamentId);
+            this.tournamentService.RemovePlayer(tournament, player);
+
             return this.Ok();
         }
     }
