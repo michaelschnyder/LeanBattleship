@@ -1,6 +1,6 @@
 using LeanBattleship.Model;
 
-namespace LeanBattleship.Web.Controllers
+namespace LeanBattleship.Common
 {
     public interface IPlayerService
     {

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B3C7951A-A27C-4ECB-9C5A-D72CDBBD7BA7}</ProjectGuid>
+    <ProjectGuid>{318739E7-856A-4259-993C-3314BF23A035}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LeanBattleship.Core</RootNamespace>
-    <AssemblyName>LeanBattleship.Core</AssemblyName>
+    <RootNamespace>LeanBattleship.Common</RootNamespace>
+    <AssemblyName>LeanBattleship.Common</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,18 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Collections" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -50,27 +39,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IApplicationSettings.cs" />
+    <Compile Include="IPlayerService.cs" />
+    <Compile Include="ITournamentService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\PlayerService.cs" />
-    <Compile Include="Services\TournamentService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LeanBattleship.Common\LeanBattleship.Common.csproj">
-      <Project>{318739E7-856A-4259-993C-3314BF23A035}</Project>
-      <Name>LeanBattleship.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LeanBattleship.Data\LeanBattleship.Data.csproj">
-      <Project>{35AC35F0-966C-406C-8845-800B938049A0}</Project>
-      <Name>LeanBattleship.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LeanBattleship.Model\LeanBattleship.Model.csproj">
       <Project>{683623B7-82A3-431F-8F22-04AD77500A34}</Project>
       <Name>LeanBattleship.Model</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

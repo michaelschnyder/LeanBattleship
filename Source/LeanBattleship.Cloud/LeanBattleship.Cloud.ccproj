@@ -48,9 +48,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="LeanBattleship.WebContent\" />
+    <Folder Include="WebRole1Content\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="LeanBattleship.WebContent\diagnostics.wadcfg">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="WebRole1Content\diagnostics.wadcfg">
       <SubType>Content</SubType>
     </Content>
   </ItemGroup>

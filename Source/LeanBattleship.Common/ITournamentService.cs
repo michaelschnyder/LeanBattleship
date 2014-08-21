@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using LeanBattleship.Model;
 
-namespace LeanBattleship.Core
+namespace LeanBattleship.Common
 {
     public interface ITournamentService
     {
@@ -10,10 +10,11 @@ namespace LeanBattleship.Core
         void AddPlayer(Tournament tournament, Player player);
         List<Tournament> GetAll();
         void RemovePlayer(Tournament tournament, Player player);
-        IMatchService GetMatchController(string matchId);
+        IMatchController GetMatchController(string matchId);
+        Tournament Create(string name);
     }
 
-    public interface IMatchService
+    public interface IMatchController
     {
     }
 }

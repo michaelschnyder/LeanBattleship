@@ -1,17 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeanBattleship.Web", "LeanBattleship.Web\LeanBattleship.Web.csproj", "{ECCCA977-0890-456D-B91E-B37308AD1E22}"
 EndProject
-Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "LeanBattleship.Cloud", "LeanBattleship.Cloud\LeanBattleship.Cloud.ccproj", "{5D19E173-0CD2-4F2C-9E18-4213B5D6225D}"
+Project("{E0F39400-C313-37A7-853B-CAE74DFB31B1}") = "LeanBattleship.Cloud", "LeanBattleship.Cloud\LeanBattleship.Cloud.ccproj", "{5D19E173-0CD2-4F2C-9E18-4213B5D6225D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeanBattleship.Model", "LeanBattleship.Model\LeanBattleship.Model.csproj", "{683623B7-82A3-431F-8F22-04AD77500A34}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeanBattleship.Data", "LeanBattleship.Data\LeanBattleship.Data.csproj", "{35AC35F0-966C-406C-8845-800B938049A0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeanBattleship.Core", "LeanBattleship.Core\LeanBattleship.Core.csproj", "{B3C7951A-A27C-4ECB-9C5A-D72CDBBD7BA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeanBattleship.Common", "LeanBattleship.Common\LeanBattleship.Common.csproj", "{318739E7-856A-4259-993C-3314BF23A035}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{B3C7951A-A27C-4ECB-9C5A-D72CDBBD7BA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3C7951A-A27C-4ECB-9C5A-D72CDBBD7BA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3C7951A-A27C-4ECB-9C5A-D72CDBBD7BA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{318739E7-856A-4259-993C-3314BF23A035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{318739E7-856A-4259-993C-3314BF23A035}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{318739E7-856A-4259-993C-3314BF23A035}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{318739E7-856A-4259-993C-3314BF23A035}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
-using LeanBattleship.Core;
+using LeanBattleship.Common;
 using Microsoft.Practices.ServiceLocation;
 
 namespace LeanBattleship.Web.Controllers
