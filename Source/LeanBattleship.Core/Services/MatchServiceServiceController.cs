@@ -49,7 +49,7 @@ namespace LeanBattleship.Core.Services
 
         private Match GetMatch()
         {
-            var all =  this.context.Matches.Where(m => m.Id ==this.matchId).Include("CurrentPlayer").Include("FirstPlayer").Include("SecondPlayer").Include("FirstPlayerFleetRaw").Include("SecondPlayerFleetRaw").ToList();
+            var all =  this.context.Matches.Where(m => m.Id ==this.matchId).Include("CurrentPlayer").Include("FirstPlayer").Include("SecondPlayer").ToList();
             return all.First();
         }
 

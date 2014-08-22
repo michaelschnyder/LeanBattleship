@@ -43,8 +43,16 @@ namespace LeanBattleship.Core.Game
                     {
                         this.isRunning = true;
                         var tick = new GameServerTick();
+
+#if (!DEBUG)
+                        try {
+#endif
                         tick.Process();
                         this.isRunning = false;
+#if (!DEBUG)
+                         } catch (Exception e) {
+}
+#endif
                     }
                 }
             }

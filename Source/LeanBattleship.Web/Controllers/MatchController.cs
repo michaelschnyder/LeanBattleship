@@ -15,20 +15,6 @@ namespace LeanBattleship.Web.Controllers
             this.playerService = ServiceLocator.Current.GetInstance<IPlayerService>();
         }
 
-        [HttpGet]
-        [Route("api/match/{matchId}/state")]
-        public IHttpActionResult GetStateForGame(int matchId)
-        {
-            var match = this.tournamentService.GetMatchController(matchId, null);
-
-            if (match == null)
-            {
-                return this.NotFound();
-            }
-
-            return this.Ok();
-        }
-
         [HttpPut]
         [Route("api/match/{matchId}/setup")]
         public IHttpActionResult Setup(int matchId, [FromBody]string[][] ships)

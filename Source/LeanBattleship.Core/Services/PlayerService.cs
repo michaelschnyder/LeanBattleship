@@ -20,7 +20,7 @@ namespace LeanBattleship.Core.Services
 
         public Player FindPlayer(string playerName)
         {
-            return this.dbContext.Players.FirstOrDefault(p => p.Name == playerName);
+            return this.dbContext.Players.ToList().FirstOrDefault(p => p.Name == playerName);
         }
 
         public Player CreatePlayer(string playerName)
@@ -33,7 +33,7 @@ namespace LeanBattleship.Core.Services
 
         public List<Match> GetActiveMatches(Player player)
         {
-            var matchesForPlayer = this.dbContext.Matches.Where(m => m.State != MatchState.Finished).Include("FirstPlayer").Include("SecondPlayer").Include("FirstPlayerFleet").Include("SecondPlayerFleet").ToList();
+            var matchesForPlayer = this.dbContext.Matches.Where(m => m.State != MatchState.Finished).Include("FirstPlayer").Include("SecondPlayer").ToList();
 
             return matchesForPlayer.Where(m => m.FirstPlayer == player || m.SecondPlayer == player).ToList();
         }

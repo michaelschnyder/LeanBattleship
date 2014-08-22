@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using LeanBattleship.Common;
@@ -22,7 +23,6 @@ namespace LeanBattleship.Core.Game
 
         public void Process()
         {
-            try
             {
                 this.FindDecidedMatchesAndFinishThem();
 
@@ -35,17 +35,13 @@ namespace LeanBattleship.Core.Game
                 this.CreateNextRoundForActiveGames();
 
             }
-            catch (Exception e)
-            {
-                Debugger.Break();
-            }
         }
 
         private void FindDecidedMatchesAndFinishThem()
         {
             var serializer = new GameFleetSerializer();
 
-            var allActiveGames = this.dbContext.Matches.Where(m => m.State == MatchState.Started && m.Rounds.Any()).ToList();
+            var allActiveGames = this.dbContext.Matches.Where(m => m.State == MatchState.Started).ToList();
 
             foreach (var match in allActiveGames)
             {
@@ -88,7 +84,20 @@ namespace LeanBattleship.Core.Game
 
         private void CreateFirstRoundForSetupGames()
         {
+            var allSetupGames = this.dbContext.Matches.Where(m => m.State == MatchState.Setup).ToList();
 
+            foreach (var match in allSetupGames)
+            {
+                if (!string.IsNullOrEmpty(match.FirstPlayerFleetRaw) && !string.IsNullOrEmpty(match.SecondPlayerFleetRaw))
+                {
+                    // Match is ready
+                    match.State = MatchState.Started;
+                    match.StartTimeUtc = DateTime.UtcNow;
+                    match.CurrentPlayer = match.CurrentPlayer;
+                }
+            }
+
+            this.dbContext.SaveChanges();
         }
 
 
