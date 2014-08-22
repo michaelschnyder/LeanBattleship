@@ -20,7 +20,7 @@ namespace LeanBattleship.Core.Game
             if (!this.isStarted)
             {
                 this.isStarted = true;
-                this.processMatchesTimer.Change(TimeSpan.FromMilliseconds(10), TimeSpan.FromMilliseconds(500));
+                this.processMatchesTimer.Change(TimeSpan.FromMilliseconds(10), TimeSpan.FromMilliseconds(5000));
             }
         }
 
