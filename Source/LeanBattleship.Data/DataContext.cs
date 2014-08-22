@@ -8,6 +8,7 @@ namespace LeanBattleship.Data
         public DbSet<Tournament> Tournaments { get; set; }
 
         public DbSet<Match> Matches { get; set; }
+        public DbSet<Player> Players { get; set; }
 
         public DataContext()
         {

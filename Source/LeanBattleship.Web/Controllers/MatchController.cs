@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http.Formatting;
 using System.Web.Http;
 using LeanBattleship.Common;
+using LeanBattleship.Core.Game;
+using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.ServiceLocation;
 
 namespace LeanBattleship.Web.Controllers
@@ -8,19 +12,21 @@ namespace LeanBattleship.Web.Controllers
     public class MatchController : ApiController
     {
         private readonly ITournamentService tournamentService;
+        private readonly IPlayerService playerService;
 
         public MatchController()
         {
             this.tournamentService = ServiceLocator.Current.GetInstance<ITournamentService>();
+            this.playerService = ServiceLocator.Current.GetInstance<IPlayerService>();
         }
 
         [HttpGet]
         [Route("api/match/{matchId}/state")]
         public IHttpActionResult GetStateForGame(int matchId)
         {
-            var game = this.tournamentService.GetMatchController(matchId);
+            var match = this.tournamentService.GetMatchController(matchId, null);
 
-            if (game == null)
+            if (match == null)
             {
                 return this.NotFound();
             }
@@ -30,19 +36,51 @@ namespace LeanBattleship.Web.Controllers
 
         [HttpPut]
         [Route("api/match/{matchId}/setup")]
-        public IHttpActionResult SetupShipsForGame(string gameId, List<ShipPlacementDto> shipPlacements)
+        public IHttpActionResult Setup(int matchId, [FromBody]string[][] ships)
         {
-            var tournament = ServiceLocator.Current.GetInstance<ITournamentService>();
+            var playerName = PlayerIdentifier.GetPlayerName(this.Request);
+            var player = this.playerService.FindPlayer(playerName);
 
-            /*
-            var game = tournament.GetGame(gameId);
-
-            if (game == null)
+            if (player == null)
             {
-                return this.NotFound();
+                return this.BadRequest("Player not found");
             }
-            */
-            return this.Ok();
+
+            var matchController = this.tournamentService.GetMatchController(matchId, player);
+
+            var shipsToAdd = new List<Ship>();
+
+            foreach (string[] shipCellStrings in ships)
+            {
+                Ship currentShip = null;
+
+                foreach (var position in shipCellStrings)
+                {
+                    var cell = this.ConvertToCell(position);
+                    cell.State = CellState.Ship;
+
+                    if (currentShip == null)
+                    {
+                        currentShip = new Ship(cell);
+                    }
+                    else
+                    {
+                        currentShip.AddCell(cell);
+                    }
+                }
+
+                if (currentShip != null)
+                {
+                    shipsToAdd.Add(currentShip);
+                }
+            }
+
+            if (matchController.SetShips(shipsToAdd))
+            {
+                return this.Ok();
+            }
+
+            return this.BadRequest("Cannot set ships");
         }
 
         [HttpPost]
@@ -64,6 +102,16 @@ namespace LeanBattleship.Web.Controllers
             }
             */
             return this.Ok();
+        }
+
+        private Cell ConvertToCell(string position)
+        {
+            var colString = position.ToLower()[0];
+
+            var colValue = colString - 97;
+            var rowValue = int.Parse(position[1].ToString()) - 1;
+
+            return new Cell() { Col = colValue, Row = rowValue };
         }
     }
 

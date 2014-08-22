@@ -14,6 +14,23 @@ namespace LeanBattleship.Core.Game
             get { return this.cells; }
         }
 
+        public GameFleet(int sheetSize, IEnumerable<Ship> ships)
+        {
+            var allCells = new List<Cell>();
+
+            for (int column = 0; column < sheetSize; column++)
+            {
+                for (int i = 0; i < sheetSize; i++)
+                {
+                    allCells.Add(new Cell() { Col = column, Row = i, State = ships.Any(s => s.InitializedCells.Any(c => c.Col == column && c.Row == i)) ? CellState.Ship : CellState.Water});
+                }
+            }
+
+            this.cells = allCells;
+
+            this.DetectShips();
+        }
+            
         public GameFleet(List<Cell> cells)
         {
             var numRows = cells.Max(c => c.Row);

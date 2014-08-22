@@ -1,4 +1,7 @@
-﻿using LeanBattleship.Common;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using LeanBattleship.Common;
 using LeanBattleship.Core.Game;
 using LeanBattleship.Data;
 using LeanBattleship.Model;
@@ -9,33 +12,65 @@ namespace LeanBattleship.Core.Services
     {
         private readonly int matchId;
         private readonly DataContext context;
+        private Player player;
 
-        public MatchController(int matchId, DataContext context)
+        public MatchController(int matchId, Player player, DataContext context)
         {
             this.matchId = matchId;
             this.context = context;
+
+            this.player = player;
         }
 
-        public bool Fire(Player player, string position)
+        public bool SetShips(List<Ship> ships)
+        {
+            var match = this.GetMatch();
+
+            if (this.IsFirstPlayer(match) && !string.IsNullOrEmpty(match.FirstPlayerFleetRaw)) return false;
+            if (!this.IsFirstPlayer(match) && !string.IsNullOrEmpty(match.SecondPlayerFleetRaw)) return false;
+
+            var fleet = new GameFleet(10, ships);
+            var serializer = new GameFleetSerializer();
+
+            if (this.IsFirstPlayer(match))
+            {
+                match.FirstPlayerFleetRaw = serializer.Serialize(fleet);
+            }
+            else
+            {
+                match.SecondPlayerFleetRaw = serializer.Serialize(fleet);
+            }
+
+            this.context.SaveChanges();
+            return true;
+        }
+
+        private Match GetMatch()
+        {
+            var all =  this.context.Matches.Where(m => m.Id ==this.matchId).Include("CurrentPlayer").Include("FirstPlayer").Include("SecondPlayer").Include("FirstPlayerFleetRaw").Include("SecondPlayerFleetRaw").ToList();
+            return all.First();
+        }
+
+        public bool Fire(string position)
         {
             var serializer = new GameFleetSerializer();
 
             // Convert to x/y
             var colString = position.ToLower()[0];
 
-            var colValue = colString - 65;
-            var rowValue = int.Parse(position[0].ToString());
+            var colValue = colString - 97;
+            var rowValue = int.Parse(position[1].ToString()) - 1;
 
-            var match = this.context.Matches.Find(this.matchId);
+            var match = this.GetMatch();
             var wasHit = false;
 
-            if (match.CurrentPlayer == player)
+            if (match.CurrentPlayer == this.player)
             {
-                if (player == match.FirstPlayer)
+                if (this.IsFirstPlayer(match))
                 {
-                    var oppositePlayerFleet = serializer.Deserialize(match.SecondPlayerFleet.RawFleetValue);
+                    var oppositePlayerFleet = serializer.Deserialize(match.SecondPlayerFleetRaw);
                     wasHit = oppositePlayerFleet.Fire(rowValue, colValue);
-                    match.SecondPlayerFleet.RawFleetValue = serializer.Serialize(oppositePlayerFleet);
+                    match.SecondPlayerFleetRaw = serializer.Serialize(oppositePlayerFleet);
 
                     if (!wasHit)
                     {
@@ -44,9 +79,9 @@ namespace LeanBattleship.Core.Services
                 }
                 else
                 {
-                    var oppositePlayerFleet = serializer.Deserialize(match.FirstPlayerFleet.RawFleetValue);
+                    var oppositePlayerFleet = serializer.Deserialize(match.FirstPlayerFleetRaw);
                     wasHit = oppositePlayerFleet.Fire(rowValue, colValue);
-                    match.FirstPlayerFleet.RawFleetValue = serializer.Serialize(oppositePlayerFleet);
+                    match.FirstPlayerFleetRaw = serializer.Serialize(oppositePlayerFleet);
 
                     if (!wasHit)
                     {
@@ -56,6 +91,11 @@ namespace LeanBattleship.Core.Services
             }
 
             return wasHit;
+        }
+
+        private bool IsFirstPlayer(Match match)
+        {
+            return this.player == match.FirstPlayer;
         }
     }
 }

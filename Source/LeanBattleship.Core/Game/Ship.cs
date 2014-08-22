@@ -40,6 +40,7 @@ namespace LeanBattleship.Core.Game
         public void AddCell(Cell cell)
         {
             this.initializedCells.Add(cell);
+            cell.Ship = this;
         }
 
         /*

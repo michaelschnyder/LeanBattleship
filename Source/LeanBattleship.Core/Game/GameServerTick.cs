@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using LeanBattleship.Common;
 using LeanBattleship.Data;
 using LeanBattleship.Model;
@@ -14,25 +17,35 @@ namespace LeanBattleship.Core.Game
         public GameServerTick()
         {
             this.version = this.GetType().Assembly.GetName().Version.ToString();
-            this.dbContext = new DataContext(ServiceLocator.Current.GetInstance<IApplicationSettings>().DatabaseConnection);
+            this.dbContext = ServiceLocator.Current.GetInstance<DataContext>();
         }
 
         public void Process()
         {
-            this.FindDecidedMatchesAndFinishThem();
+            try
+            {
+                this.FindDecidedMatchesAndFinishThem();
 
-            this.KickInactivePlayers();
+                this.KickInactivePlayers();
 
-            this.AssignWaitingPlayersToNewGames();
+                this.AssignWaitingPlayersToNewGames();
 
-            this.CreateNextRoundForActiveGames();
+                this.CreateFirstRoundForSetupGames();
+
+                this.CreateNextRoundForActiveGames();
+
+            }
+            catch (Exception e)
+            {
+                Debugger.Break();
+            }
         }
 
         private void FindDecidedMatchesAndFinishThem()
         {
             var serializer = new GameFleetSerializer();
 
-            var allActiveGames = this.dbContext.Matches.Where(m => m.State == MatchState.Started && m.Rounds.Any());
+            var allActiveGames = this.dbContext.Matches.Where(m => m.State == MatchState.Started && m.Rounds.Any()).ToList();
 
             foreach (var match in allActiveGames)
             {
@@ -42,8 +55,8 @@ namespace LeanBattleship.Core.Game
                 {
                     match.CurrentPlayer = null;
 
-                    var playerOneGameFleet = serializer.Deserialize(match.FirstPlayerFleet.RawFleetValue);
-                    var playerTwoGameFleet = serializer.Deserialize(match.SecondPlayerFleet.RawFleetValue);
+                    var playerOneGameFleet = serializer.Deserialize(match.FirstPlayerFleetRaw);
+                    var playerTwoGameFleet = serializer.Deserialize(match.SecondPlayerFleetRaw);
 
                     if (playerOneGameFleet.AllSunk || playerTwoGameFleet.AllSunk)
                     {
@@ -73,6 +86,12 @@ namespace LeanBattleship.Core.Game
 
         }
 
+        private void CreateFirstRoundForSetupGames()
+        {
+
+        }
+
+
         private void CreateNextRoundForActiveGames()
         {
             
@@ -80,7 +99,43 @@ namespace LeanBattleship.Core.Game
 
         private void AssignWaitingPlayersToNewGames()
         {
-            
+            var allActiveGames = this.dbContext.Matches.Where(m => m.State != MatchState.Finished);
+
+            var activePlayers = new List<Player>();
+            activePlayers.AddRange(allActiveGames.Select(m => m.FirstPlayer));
+            activePlayers.AddRange(allActiveGames.Select(m => m.SecondPlayer));
+
+            var allTournaments = this.dbContext.Tournaments.Include("Players").Include("Matches").ToList();
+
+            foreach (var tournament in allTournaments)
+            {
+                var unAssignedPlayers = tournament.Players.Where(tournamentPlayer => !activePlayers.Contains(tournamentPlayer)).ToList();
+
+                while (unAssignedPlayers.Count >= 2)
+                {
+                    var player1 = unAssignedPlayers[new Random().Next(0, unAssignedPlayers.Count - 1)];
+                    unAssignedPlayers.Remove(player1);
+
+                    var player2 = unAssignedPlayers[new Random().Next(0, unAssignedPlayers.Count - 1)];
+                    unAssignedPlayers.Remove(player2);
+
+                    var match = new Match()
+                    {
+                        FirstPlayer = player1,
+                        SecondPlayer = player2,
+                        SetupTimeUtc = DateTime.UtcNow,
+                        State = MatchState.Setup,
+                    };
+
+                    this.dbContext.Matches.Add(match);
+                    this.dbContext.SaveChanges();
+
+                    tournament.Matches.Add(match);
+                    this.dbContext.SaveChanges();
+                }
+            }
+
+            this.dbContext.SaveChanges();
         }
 
         private void KickInactivePlayers()

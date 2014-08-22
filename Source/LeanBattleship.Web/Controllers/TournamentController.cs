@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using LeanBattleship.Common;
+using LeanBattleship.Model;
 using LeanBattleship.Web.Dto;
 using Microsoft.Practices.ServiceLocation;
 
@@ -99,10 +100,31 @@ namespace LeanBattleship.Web.Controllers
                 {
                     myMatch.WaitingFor = "Other";
                 }
+                else if (match.CurrentPlayer == null && match.State == MatchState.Setup)
+                {
+                    if (string.IsNullOrEmpty(match.FirstPlayerFleetRaw) && match.SecondPlayerFleetRaw == null)
+                    {
+                        myMatch.WaitingFor = "Both";
+                    }
+                    else if ((string.IsNullOrEmpty(match.FirstPlayerFleetRaw) && match.FirstPlayer == player) || (string.IsNullOrEmpty(match.SecondPlayerFleetRaw) && match.SecondPlayer == player))
+                    {
+                        myMatch.WaitingFor = "You";
+                    }
+                    else if((string.IsNullOrEmpty(match.FirstPlayerFleetRaw) && match.FirstPlayer != player) || (string.IsNullOrEmpty(match.SecondPlayerFleetRaw) && match.SecondPlayer != player))
+                    {
+                        myMatch.WaitingFor = "Other";
+                    }
+                    else
+                    {
+                        myMatch.WaitingFor = "Server";
+                    }
+                }
                 else
                 {
                     myMatch.WaitingFor = "Server";
                 }
+
+                myMatches.Add(myMatch);
             }
 
             return Json(myMatches);

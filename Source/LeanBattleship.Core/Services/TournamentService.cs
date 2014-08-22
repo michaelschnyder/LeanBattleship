@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using LeanBattleship.Common;
 using LeanBattleship.Data;
@@ -14,7 +15,7 @@ namespace LeanBattleship.Core.Services
 
         public TournamentService()
         {
-            this.dbContext = new DataContext(ServiceLocator.Current.GetInstance<IApplicationSettings>().DatabaseConnection);
+            this.dbContext = ServiceLocator.Current.GetInstance<DataContext>();
         }
 
         public bool Exists(int tournamentId)
@@ -32,9 +33,9 @@ namespace LeanBattleship.Core.Services
             return this.dbContext.Tournaments.ToList();
         }
 
-        public IMatchController GetMatchController(int matchId)
+        public IMatchController GetMatchController(int matchId, Player player)
         {
-            return new MatchController(matchId, this.dbContext);
+            return new MatchController(matchId, player, this.dbContext);
         }
 
         public Tournament Create(string name)
@@ -50,12 +51,26 @@ namespace LeanBattleship.Core.Services
 
         public void RemovePlayer(Tournament tournament, Player player)
         {
+            var t = this.dbContext.Tournaments.Find(tournament.Id);
             
+            if (t.Players.Contains(player))
+            {
+                t.Players.Remove(player);
+            }
+
+            this.dbContext.SaveChanges();
         }
 
         public void AddPlayer(Tournament tournament, Player player)
         {
+            var t = this.dbContext.Tournaments.Where(tour => tour.Id == tournament.Id).Include("Players").First();
 
+            if (!t.Players.Contains(player))
+            {
+                t.Players.Add(player);
+            }
+
+            this.dbContext.SaveChanges();
         }
     }
 }

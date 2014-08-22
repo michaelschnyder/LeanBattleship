@@ -19,17 +19,23 @@ namespace LeanBattleship.Model
 
         public List<Round> Rounds { get; set; }
 
-        public Fleet FirstPlayerFleet { get; set; }
+        public string FirstPlayerFleetRaw { get; set; }
 
-        public Fleet SecondPlayerFleet { get; set; }
+        public string SecondPlayerFleetRaw { get; set; }
 
-        public DateTime StartTimeUtc { get; set; }
+        public DateTime SetupTimeUtc { get; set; }
+        
+        public DateTime? StartTimeUtc { get; set; }
+
+        public DateTime? LastFireUtc { get; set; }
+
     }
 
     public enum MatchState
     {
         Setup = 1001,
         Started = 1002,
-        Finished = 1003
+        Finished = 1003,
+        Canceled = 1009
     }
 }

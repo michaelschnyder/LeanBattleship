@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Services.Description;
 using LeanBattleship.Common;
+using LeanBattleship.Core.Game;
 using LeanBattleship.Core.Services;
 using LeanBattleship.Data;
 // using LeanBattleship.Data.Migrations;
@@ -23,13 +25,16 @@ namespace LeanBattleship.Web
             var locator = new UnityServiceLocator(ConfigureUnityContainer());
             ServiceLocator.SetLocatorProvider(() => locator);
 
-            var ctx = new DataContext(ServiceLocator.Current.GetInstance<IApplicationSettings>().DatabaseConnection);
+            var ctx = ServiceLocator.Current.GetInstance<DataContext>();
 
             var alltournaments = ctx.Tournaments.ToList();
 
             Console.WriteLine("There are {0} tournaments", alltournaments.Count);
-        }
 
+            var gameServer = new GameServer();
+            gameServer.Start();
+        }
+        
         private static IUnityContainer ConfigureUnityContainer()
         {
             var container = new UnityContainer();
@@ -39,6 +44,11 @@ namespace LeanBattleship.Web
             container.RegisterType<ITournamentService, TournamentService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IPlayerService, PlayerService>(new ContainerControlledLifetimeManager());
             
+
+            var ctx = new DataContext(container.Resolve<IApplicationSettings>().DatabaseConnection);
+            container.RegisterInstance(typeof (DataContext), ctx);
+
+
             return container;
         }
 
