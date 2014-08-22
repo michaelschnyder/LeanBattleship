@@ -39,9 +39,20 @@ namespace LeanBattleship.Web.Controllers
 
         [HttpPost]
         [Route("api/match/{matchId}/fire/{position}")]
-        public IHttpActionResult FireInGame(string gameId, string position)
+        public IHttpActionResult FireInGame(int matchId, string position)
         {
-            var tournament = ServiceLocator.Current.GetInstance<ITournamentService>();
+            var playerName = PlayerIdentifier.GetPlayerName(this.Request);
+            var player = this.playerService.FindPlayer(playerName);
+
+            if (player == null)
+            {
+                return this.BadRequest("Player not found");
+            }
+
+            var matchController = this.tournamentService.GetMatchController(matchId, player);
+
+
+
             /*
             var game = tournament.GetGame(gameId);
 
