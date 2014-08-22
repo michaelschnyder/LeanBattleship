@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http.Formatting;
-using System.Web.Http;
+﻿using System.Web.Http;
 using LeanBattleship.Common;
-using LeanBattleship.Core.Game;
-using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.ServiceLocation;
 
 namespace LeanBattleship.Web.Controllers

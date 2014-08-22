@@ -8,7 +8,7 @@ namespace LeanBattleship.Web
         public static string GetPlayerName(HttpRequestMessage requestMessage)
         {
             // Get Playername from Header
-            var playerNameHeader = requestMessage.Headers.FirstOrDefault(h => h.Key == "LeanBattleship-Player");
+            var playerNameHeader = requestMessage.Headers.FirstOrDefault(h => h.Key.ToLowerInvariant() == "leanbattleship-player");
             return playerNameHeader.Value.First();
         }
     }
