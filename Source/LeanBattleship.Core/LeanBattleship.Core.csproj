@@ -50,8 +50,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameServer.cs" />
+    <Compile Include="Game\Cell.cs" />
+    <Compile Include="Game\GameFleet.cs" />
+    <Compile Include="Game\Ship.cs" />
+    <Compile Include="Game\GameFleetSerializer.cs" />
+    <Compile Include="Game\GameServer.cs" />
+    <Compile Include="Game\GameServerTick.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\MatchController.cs" />
     <Compile Include="Services\PlayerService.cs" />
     <Compile Include="Services\TournamentService.cs" />
   </ItemGroup>

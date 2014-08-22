@@ -32,9 +32,9 @@ namespace LeanBattleship.Core.Services
             return this.dbContext.Tournaments.ToList();
         }
 
-        public IMatchController GetMatchController(string matchId)
+        public IMatchController GetMatchController(int matchId)
         {
-            throw new NotImplementedException();
+            return new MatchController(matchId, this.dbContext);
         }
 
         public Tournament Create(string name)
@@ -55,7 +55,7 @@ namespace LeanBattleship.Core.Services
 
         public void AddPlayer(Tournament tournament, Player player)
         {
-            throw new NotImplementedException();
+
         }
     }
 }

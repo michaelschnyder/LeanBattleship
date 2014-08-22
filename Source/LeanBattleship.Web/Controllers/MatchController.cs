@@ -16,7 +16,7 @@ namespace LeanBattleship.Web.Controllers
 
         [HttpGet]
         [Route("api/match/{matchId}/state")]
-        public IHttpActionResult GetStateForGame(string matchId)
+        public IHttpActionResult GetStateForGame(int matchId)
         {
             var game = this.tournamentService.GetMatchController(matchId);
 

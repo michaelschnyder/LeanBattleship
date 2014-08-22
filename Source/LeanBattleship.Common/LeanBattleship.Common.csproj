@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IApplicationSettings.cs" />
+    <Compile Include="IMatchController.cs" />
     <Compile Include="IPlayerService.cs" />
     <Compile Include="ITournamentService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

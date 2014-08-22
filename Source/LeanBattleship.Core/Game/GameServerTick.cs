@@ -1,49 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading;
+﻿using System.Linq;
 using LeanBattleship.Common;
 using LeanBattleship.Data;
 using LeanBattleship.Model;
 using Microsoft.Practices.ServiceLocation;
 
-namespace LeanBattleship.Core
+namespace LeanBattleship.Core.Game
 {
-    public class GameServer
-    {
-        private Timer processMatchesTimer = new Timer(Callback);
-        private bool isStarted;
-
-        public GameServer()
-        {
-        }
-
-        public void Start()
-        {
-            if (!this.isStarted)
-            {
-                this.isStarted = true;
-                this.processMatchesTimer.Change(TimeSpan.FromMilliseconds(10), TimeSpan.FromMilliseconds(500));
-            }
-        }
-
-        public void Stop()
-        {
-            if (this.isStarted)
-            {
-                this.processMatchesTimer.Change(TimeSpan.FromMilliseconds(10), TimeSpan.FromMilliseconds(500));
-                this.isStarted = false;
-            }
-        }
-
-        private static void Callback(object state)
-        {
-            var tick = new GameServerTick();
-            tick.Process();
-        }
-    }
-
     internal class GameServerTick
     {
         private string version;
@@ -68,7 +30,9 @@ namespace LeanBattleship.Core
 
         private void FindDecidedMatchesAndFinishThem()
         {
-            var allActiveGames = dbContext.Matches.Where(m => m.State == MatchState.Started && m.Rounds.Any());
+            var serializer = new GameFleetSerializer();
+
+            var allActiveGames = this.dbContext.Matches.Where(m => m.State == MatchState.Started && m.Rounds.Any());
 
             foreach (var match in allActiveGames)
             {
@@ -78,8 +42,8 @@ namespace LeanBattleship.Core
                 {
                     match.CurrentPlayer = null;
 
-                    var playerOneGameFleet = new GameFleet(match.FirstPlayerFleet.RawFleetValue);
-                    var playerTwoGameFleet = new GameFleet(match.SecondPlayerFleet.RawFleetValue);
+                    var playerOneGameFleet = serializer.Deserialize(match.FirstPlayerFleet.RawFleetValue);
+                    var playerTwoGameFleet = serializer.Deserialize(match.SecondPlayerFleet.RawFleetValue);
 
                     if (playerOneGameFleet.AllSunk || playerTwoGameFleet.AllSunk)
                     {
@@ -122,26 +86,6 @@ namespace LeanBattleship.Core
         private void KickInactivePlayers()
         {
             
-        }
-    }
-
-    internal class GameFleet
-    {
-        public GameFleet(string rawFleetValue)
-        {
-            
-        }
-
-        public string RawValue
-        {
-            get { return string.Empty; }
-        }
-
-        public bool AllSunk { get; private set; }
-
-        public bool Fire(string field)
-        {
-            return false;
         }
     }
 }
