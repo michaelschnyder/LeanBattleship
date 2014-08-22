@@ -30,9 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LeanBattleship.Core">
-      <HintPath>..\LeanBattleship.Web\Bin\LeanBattleship.Core.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,7 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IApplicationSettings.cs" />
-    <Compile Include="IMatchController.cs" />
+    <Compile Include="IMatchServiceController.cs" />
     <Compile Include="IPlayerService.cs" />
     <Compile Include="ITournamentService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

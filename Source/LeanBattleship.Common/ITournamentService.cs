@@ -10,7 +10,7 @@ namespace LeanBattleship.Common
         void AddPlayer(Tournament tournament, Player player);
         List<Tournament> GetAll();
         void RemovePlayer(Tournament tournament, Player player);
-        IMatchController GetMatchController(int matchId, Player player);
+        IMatchServiceController GetMatchController(int matchId, Player player);
         Tournament Create(string name);
     }
 }

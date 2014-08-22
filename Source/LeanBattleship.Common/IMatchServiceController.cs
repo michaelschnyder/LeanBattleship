@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using LeanBattleship.Core.Game;
 
 namespace LeanBattleship.Common
 {
-    public interface IMatchController
+    public interface IMatchServiceController
     {
         bool Fire(string position);
-        bool SetShips(List<Ship> ships);
+        bool SetShips(string[][] ships);
     }
 }

@@ -33,9 +33,9 @@ namespace LeanBattleship.Core.Services
             return this.dbContext.Tournaments.ToList();
         }
 
-        public IMatchController GetMatchController(int matchId, Player player)
+        public IMatchServiceController GetMatchController(int matchId, Player player)
         {
-            return new MatchController(matchId, player, this.dbContext);
+            return new MatchServiceServiceController(matchId, player, this.dbContext);
         }
 
         public Tournament Create(string name)

@@ -48,34 +48,7 @@ namespace LeanBattleship.Web.Controllers
 
             var matchController = this.tournamentService.GetMatchController(matchId, player);
 
-            var shipsToAdd = new List<Ship>();
-
-            foreach (string[] shipCellStrings in ships)
-            {
-                Ship currentShip = null;
-
-                foreach (var position in shipCellStrings)
-                {
-                    var cell = this.ConvertToCell(position);
-                    cell.State = CellState.Ship;
-
-                    if (currentShip == null)
-                    {
-                        currentShip = new Ship(cell);
-                    }
-                    else
-                    {
-                        currentShip.AddCell(cell);
-                    }
-                }
-
-                if (currentShip != null)
-                {
-                    shipsToAdd.Add(currentShip);
-                }
-            }
-
-            if (matchController.SetShips(shipsToAdd))
+            if (matchController.SetShips(ships))
             {
                 return this.Ok();
             }
@@ -102,16 +75,6 @@ namespace LeanBattleship.Web.Controllers
             }
             */
             return this.Ok();
-        }
-
-        private Cell ConvertToCell(string position)
-        {
-            var colString = position.ToLower()[0];
-
-            var colValue = colString - 97;
-            var rowValue = int.Parse(position[1].ToString()) - 1;
-
-            return new Cell() { Col = colValue, Row = rowValue };
         }
     }
 

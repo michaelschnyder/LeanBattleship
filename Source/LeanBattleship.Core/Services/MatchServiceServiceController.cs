@@ -8,13 +8,13 @@ using LeanBattleship.Model;
 
 namespace LeanBattleship.Core.Services
 {
-    class MatchController : IMatchController
+    class MatchServiceServiceController : IMatchServiceController
     {
         private readonly int matchId;
         private readonly DataContext context;
         private Player player;
 
-        public MatchController(int matchId, Player player, DataContext context)
+        public MatchServiceServiceController(int matchId, Player player, DataContext context)
         {
             this.matchId = matchId;
             this.context = context;
@@ -22,14 +22,16 @@ namespace LeanBattleship.Core.Services
             this.player = player;
         }
 
-        public bool SetShips(List<Ship> ships)
+        public bool SetShips(string[][] ships)
         {
             var match = this.GetMatch();
 
             if (this.IsFirstPlayer(match) && !string.IsNullOrEmpty(match.FirstPlayerFleetRaw)) return false;
             if (!this.IsFirstPlayer(match) && !string.IsNullOrEmpty(match.SecondPlayerFleetRaw)) return false;
 
-            var fleet = new GameFleet(10, ships);
+            var shipsList = this.GetShips(ships);
+
+            var fleet = new GameFleet(10, shipsList);
             var serializer = new GameFleetSerializer();
 
             if (this.IsFirstPlayer(match))
@@ -91,6 +93,48 @@ namespace LeanBattleship.Core.Services
             }
 
             return wasHit;
+        }
+
+        private List<Ship> GetShips(IEnumerable<string[]> ships)
+        {
+            var shipsToAdd = new List<Ship>();
+
+            foreach (string[] shipCellStrings in ships)
+            {
+                Ship currentShip = null;
+
+                foreach (var position in shipCellStrings)
+                {
+                    var cell = this.ConvertToCell(position);
+                    cell.State = CellState.Ship;
+
+                    if (currentShip == null)
+                    {
+                        currentShip = new Ship(cell);
+                    }
+                    else
+                    {
+                        currentShip.AddCell(cell);
+                    }
+                }
+
+                if (currentShip != null)
+                {
+                    shipsToAdd.Add(currentShip);
+                }
+            }
+
+            return shipsToAdd;
+        }
+
+        private Cell ConvertToCell(string position)
+        {
+            var colString = position.ToLower()[0];
+
+            var colValue = colString - 97;
+            var rowValue = int.Parse(position[1].ToString()) - 1;
+
+            return new Cell() { Col = colValue, Row = rowValue };
         }
 
         private bool IsFirstPlayer(Match match)
